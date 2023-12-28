@@ -52,21 +52,21 @@ public class AimBehaviourBasic : GenericBehaviour
 	{
 		yield return new WaitForSeconds(0.05f);
 		// Aiming is not possible.
-		if (behaviourManager.GetTempLockStatus(this.behaviourCode) || behaviourManager.IsOverriding(this))
-			yield return false;
+		// if (behaviourManager.GetTempLockStatus(this.behaviourCode) || behaviourManager.IsOverriding(this))
+		// 	yield return false;
 
-		// Start aiming.
-		else
-		{
+		// // Start aiming.
+		// else
+		// {
 			aim = true;
 			int signal = 1;
 			aimCamOffset.x = Mathf.Abs(aimCamOffset.x) * signal;
 			aimPivotOffset.x = Mathf.Abs(aimPivotOffset.x) * signal;
 			yield return new WaitForSeconds(0.1f);
-			behaviourManager.GetAnim.SetFloat(speedFloat, 0);
+			// behaviourManager.GetAnim.SetFloat(speedFloat, 0);
 			// This state overrides the active one.
 			behaviourManager.OverrideWithBehaviour(this);
-		}
+		// }
 	}
 
 	// Co-routine to end aiming mode with delay.
