@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyShootProjectiles : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     [SerializeField] public int numShots = 5;
     [SerializeField] public float rotationAngle = 15f;
