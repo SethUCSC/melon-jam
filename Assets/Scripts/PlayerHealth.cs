@@ -33,11 +33,12 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (health <= 0)
+        if (isPlayer && health <= 0)
         {
             Time.timeScale = 0f;
             // gameOver.SetActive(true);
         }
+        else if (!isPlayer && health <= 0) Destroy(gameObject);
     }
 
     public void Restart()
