@@ -5,14 +5,29 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float moveSpeed = 10f;
+    public float lifetime = 7f;
     private Vector3 shootDirection;
 
     public void Setup(Vector3 shootDirection) {
         this.shootDirection = shootDirection;
     }
 
+    void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
+
     void Update()
     {
         transform.position += shootDirection * moveSpeed * Time.deltaTime; 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Obstacle")) Destroy(gameObject);
     }
 }

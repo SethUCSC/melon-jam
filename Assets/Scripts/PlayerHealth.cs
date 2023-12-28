@@ -22,10 +22,8 @@ public class PlayerHealth : MonoBehaviour
     public float totalDamage = 10f;
     public float invul_dur = 2f;
     public Vector2 offset;
-
-    [Header("Other File Includes")]
     // public ParticleSystem spark;
-    public GameObject gameOver;
+    // public GameObject gameOver;
 
 
     // public BoxCollider2D playerCollider;
@@ -37,13 +35,13 @@ public class PlayerHealth : MonoBehaviour
         if (health <= 0)
         {
             Time.timeScale = 0f;
-            gameOver.SetActive(true);
+            // gameOver.SetActive(true);
         }
     }
 
     public void Restart()
     {
-        gameOver.SetActive(false);
+        // gameOver.SetActive(false);
         health = 20f;
         healthBar.fillAmount = 10f;
         Time.timeScale = 1f;
@@ -61,7 +59,8 @@ public class PlayerHealth : MonoBehaviour
     {
         canDamage = false;
         health -= damage;
-        healthBar.fillAmount = health / 20f;
+        healthBar.fillAmount = health / 10f;
+        Debug.Log("Hello???");
     
         yield return new WaitForSeconds(0.15f);
         canDamage = true;
@@ -70,5 +69,15 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float amount){
         health -= amount;
         OnPlayerDamaged?.Invoke();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy Projectile"))
+        {
+            StartCoroutine(Damaged());
+            // TakeDamage(1);
+        }
+        else if (other.CompareTag("Obstacle")) Destroy(gameObject);
     }
 }
