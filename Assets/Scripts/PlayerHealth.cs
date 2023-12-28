@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
 {
     public float health = 10f;
     public bool enemyHit = false;
+    public bool isPlayer;
 
     
     public Image healthBar;
@@ -59,7 +60,7 @@ public class PlayerHealth : MonoBehaviour
     {
         canDamage = false;
         health -= damage;
-        healthBar.fillAmount = health / 10f;
+        if (isPlayer) healthBar.fillAmount = health / 10f;
         Debug.Log("Hello???");
     
         yield return new WaitForSeconds(0.15f);
@@ -73,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy Projectile"))
+        if ((isPlayer && other.CompareTag("Enemy Projectile")) || (!isPlayer && other.CompareTag("Player Projectile")))
         {
             StartCoroutine(Damaged());
             // TakeDamage(1);
