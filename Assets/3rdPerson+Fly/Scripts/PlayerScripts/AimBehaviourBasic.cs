@@ -34,7 +34,7 @@ public class AimBehaviourBasic : GenericBehaviour
 		}
 
 		// No sprinting while aiming.
-		canSprint = !aim;
+		// canSprint = !aim;
 
 		// Toggle camera aim position left or right, switching shoulders.
 		if (aim && Input.GetButtonDown (shoulderButton))

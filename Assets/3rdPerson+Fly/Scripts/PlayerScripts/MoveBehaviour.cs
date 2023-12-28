@@ -11,12 +11,15 @@ public class MoveBehaviour : GenericBehaviour
 	public string jumpButton = "Jump";              // Default jump button.
 	public float jumpHeight = 1.5f;                 // Default jump height.
 	public float jumpInertialForce = 10f;          // Default horizontal inertial force when jumping.
+	public float flapSpeed = 0f;
 
 	private float speed, speedSeeker;               // Moving speed.
 	private int jumpBool;                           // Animator variable related to jumping.
 	private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
 	private bool jump;                              // Boolean to determine whether or not the player started a jump.
 	private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
+	public float horizontal;
+	public float vertical;
 
 	// Start is always called after any Awake functions.
 	void Start()
@@ -36,8 +39,11 @@ public class MoveBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
+		horizontal = Input.GetAxis("Horizontal");
+		vertical = Input.GetAxis("Vertical");
+
 		// Get jump input.
-		if (!jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
+		if (!jump && Input.GetButtonDown(jumpButton))
 		{
 			jump = true;
 		}
@@ -51,20 +57,20 @@ public class MoveBehaviour : GenericBehaviour
 
 		// Call the jump manager.
 		JumpManagement();
-	}
 
-	// Execute the idle and walk/run jump movements.
+		AirControl();
+		
+	}
+	
 	void JumpManagement()
 	{
 		// Start a new jump.
-		if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
+		if (jump && !behaviourManager.GetAnim.GetBool(jumpBool))
 		{
 			// Set jump related parameters.
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(jumpBool, true);
 			// Is a locomotion jump?
-			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
-			{
 				// Temporarily change player friction to pass through obstacles.
 				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
 				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
@@ -74,43 +80,42 @@ public class MoveBehaviour : GenericBehaviour
 				float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
 				velocity = Mathf.Sqrt(velocity);
 				behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-			}
+			
 		}
 		// Is already jumping?
 		else if (behaviourManager.GetAnim.GetBool(jumpBool))
 		{
-			// Keep forward movement while in the air.
-			if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
-			{
-				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpInertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
-			}
 			// Has landed?
-			if ((behaviourManager.GetRigidBody.velocity.y < 0) && behaviourManager.IsGrounded())
+			if (behaviourManager.IsGrounded())
 			{
-				behaviourManager.GetAnim.SetBool(groundedBool, true);
 				// Change back player friction to default.
 				GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
 				GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+				behaviourManager.UnlockTempBehaviour(this.behaviourCode);
 				// Set jump related parameters.
+			}
+			if ((behaviourManager.GetRigidBody.velocity.y > flapSpeed))
+			{
+				behaviourManager.GetAnim.SetBool(groundedBool, true);
 				jump = false;
 				behaviourManager.GetAnim.SetBool(jumpBool, false);
-				behaviourManager.UnlockTempBehaviour(this.behaviourCode);
 			}
 		}
 	}
+	
 
 	// Deal with the basic player movement
 	void MovementManagement(float horizontal, float vertical)
 	{
 		// On ground, obey gravity.
-		if (behaviourManager.IsGrounded())
-			behaviourManager.GetRigidBody.useGravity = true;
+		// if (behaviourManager.IsGrounded())
+		behaviourManager.GetRigidBody.useGravity = true;
 
 		// Avoid takeoff when reached a slope end.
-		else if (!behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.GetRigidBody.velocity.y > 0)
-		{
-			RemoveVerticalVelocity();
-		}
+		// if (!behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.GetRigidBody.velocity.y > 0)
+		// {
+		// 	RemoveVerticalVelocity();
+		// }
 
 		// Call function that deals with player orientation.
 		Rotating(horizontal, vertical);
@@ -128,6 +133,14 @@ public class MoveBehaviour : GenericBehaviour
 		}
 
 		behaviourManager.GetAnim.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
+	}
+
+	void AirControl()
+	{
+		if ((horizontal != 0 || vertical != 0) && !isColliding)
+		{
+			behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpInertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
+		}
 	}
 
 	// Remove vertical rigidbody velocity.
