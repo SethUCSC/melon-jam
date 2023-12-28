@@ -7,7 +7,7 @@ public class PlayerShootProjectile : MonoBehaviour
     [SerializeField] public int numShots = 5;
     [SerializeField] public float rotationAngle = 15f;
     [SerializeField] private Transform projectile;
-    [SerializeField] private Transform enemy;
+    
     // Start is called before the first frame update
     void Start()
     {
