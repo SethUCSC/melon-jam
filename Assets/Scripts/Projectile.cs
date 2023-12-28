@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public float lifetime = 7f;
+    public bool isPlayerProjectile;
     private Vector3 shootDirection;
 
     public void Setup(Vector3 shootDirection) {
@@ -24,7 +25,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isPlayerProjectile)
         {
             Destroy(gameObject);
         }
