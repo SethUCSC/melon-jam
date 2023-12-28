@@ -13,36 +13,21 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform secondIdleLocation;
     private Transform nextLocation;
     [SerializeField] public float sightRange = 5f;
-    public LayerMask whatIsPlayer;
-    private bool playerDetected = false;
-    IAstarAI ai;
+    private bool playerDetected;
     void Start()
     {
         gameObject.GetComponent<AIDestinationSetter>().target = idleLocation;
-        if (secondIdleLocation) {
-            nextLocation = secondIdleLocation;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {  
-        if (GetComponent<IAstarAI>().reachedEndOfPath && !playerDetected && secondIdleLocation) {
-            if (nextLocation == idleLocation) {
-                gameObject.GetComponent<AIDestinationSetter>().target = idleLocation;
-                nextLocation = secondIdleLocation;
-            }
-            else {
-                gameObject.GetComponent<AIDestinationSetter>().target = secondIdleLocation;
-                Debug.Log(gameObject.GetComponent<AIDestinationSetter>().target);
-                nextLocation = idleLocation;
-            }
-        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !playerDetected)
+        if ((other.CompareTag("Player") || other.CompareTag("Player Projectile")) && !playerDetected)
         {
             playerDetected = true;
             InvokeRepeating("ShootBullet", 1f, 1f);
