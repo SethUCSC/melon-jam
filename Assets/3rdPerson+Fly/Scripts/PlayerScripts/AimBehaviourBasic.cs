@@ -125,8 +125,6 @@ public class AimBehaviourBasic : GenericBehaviour
 	{
 		if (crosshair)
 		{
-			float mag = behaviourManager.GetCamScript.GetCurrentPivotMagnitude(aimPivotOffset);
-			if (mag < 0.05f)
 				GUI.DrawTexture(new Rect(Screen.width / 2.0f - (crosshair.width * 0.5f),
 										 Screen.height / 2.0f - (crosshair.height * 0.5f),
 										 crosshair.width, crosshair.height), crosshair);
