@@ -27,7 +27,7 @@ public class CaptiveScript : MonoBehaviour
     void Start()
     {
         ai = GetComponent<IAstarAI>();   
-        chance = Random.Range(0f, 100f);
+        chance = Random.Range(0, 100);
     }
 
     Vector3 PickRandomPoint () {
