@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CaptiveScript : MonoBehaviour
 {
+    public Image influenceBar;
     public float influenceTimer = 0f;
     public float requiredTime = 6f;
     public float chance;
@@ -26,6 +27,7 @@ public class CaptiveScript : MonoBehaviour
         {
             chance = Random.Range(0f, 100f);
             influenceTimer -= Time.deltaTime;
+            influenceBar.fillAmount = influenceTimer / 5f;
         }
 
         if (influenceTimer > 5)
@@ -42,6 +44,7 @@ public class CaptiveScript : MonoBehaviour
         if ((other.CompareTag("Aura")) && stillCaptive)
         {
             if (influenceTimer < requiredTime) influenceTimer += Time.deltaTime;
+            influenceBar.fillAmount = influenceTimer / 5f;
         }
     }
 
