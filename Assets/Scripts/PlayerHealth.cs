@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
 
     
     public Image healthBar;
-    public float damage;
+    public float damage = 1;
     // Start is called before the first frame update
     [Header("Health Variables")]
     public bool canDamage = true;
@@ -73,13 +73,12 @@ public class PlayerHealth : MonoBehaviour
         OnPlayerDamaged?.Invoke();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((isPlayer && other.CompareTag("Enemy Projectile")) || (!isPlayer && other.CompareTag("Player Projectile")))
-        {
-            StartCoroutine(Damaged());
-            // TakeDamage(1);
-        }
-        else if (other.CompareTag("Obstacle")) Destroy(gameObject);
-    }
+    // private void OnTriggerEnter(Collider other)
+    // { // || (!isPlayer && other.CompareTag("Player Projectile"))
+    //     if ((isPlayer && other.CompareTag("Enemy Projectile")))
+    //     {
+    //         StartCoroutine(Damaged());
+    //     }
+    //     else if (other.CompareTag("Obstacle")) Destroy(gameObject);
+    // }
 }
