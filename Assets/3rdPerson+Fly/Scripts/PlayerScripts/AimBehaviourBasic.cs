@@ -52,8 +52,8 @@ public class AimBehaviourBasic : GenericBehaviour
 	{
 		yield return new WaitForSeconds(0.05f);
 		// Aiming is not possible.
-		if (behaviourManager.GetTempLockStatus(this.behaviourCode) || behaviourManager.IsOverriding(this))
-			yield return false;
+		// if (behaviourManager.GetTempLockStatus(this.behaviourCode) || behaviourManager.IsOverriding(this))
+		// 	yield return false;
 
 		// // Start aiming.
 		// else

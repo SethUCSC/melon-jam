@@ -6,6 +6,10 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	public Transform player;                                           // Player's reference.
 	public Vector3 pivotOffset = new Vector3(0.0f, 1.7f,  0.0f);       // Offset to repoint the camera.
 	public Vector3 camOffset   = new Vector3(0.0f, 0.0f, -3.0f);       // Offset to relocate the camera related to the player position.
+	public Vector3 aimPivotOffset = new Vector3(0.5f, 1.2f,  0f);         // Offset to repoint the camera when aiming.
+	public Vector3 aimCamOffset   = new Vector3(0f, 0.4f, -0.7f);  
+	public string aimButton = "Aim";
+	public bool isDead = false;
 	public float smooth = 10f;                                         // Speed of camera responsiveness.
 	public float horizontalAimingSpeed = 6f;                           // Horizontal turn speed.
 	public float verticalAimingSpeed = 6f;                             // Vertical turn speed.
@@ -95,6 +99,17 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		smoothCamOffset = Vector3.Lerp(smoothCamOffset, customOffsetCollision ? Vector3.zero : noCollisionOffset, smooth * Time.deltaTime);
 
 		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
+	}
+
+	public void Aim()
+	{
+		if (Input.GetAxisRaw(aimButton) != 0)
+			SetTargetOffsets (aimPivotOffset, aimCamOffset);
+		else if (Input.GetAxisRaw(aimButton) == 0)	
+		{
+			ResetTargetOffsets();
+			ResetMaxVerticalAngle();	
+		}
 	}
 
 	// Set camera offsets to custom values.
