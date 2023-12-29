@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class CaptiveScript : MonoBehaviour
 {
     public Image influenceBar;
+    public CharmManager charm;
     public float influenceTimer = 0f;
     public float requiredTime = 6f;
-    public float chance;
+    public int chance;
     public bool stillCaptive = true;
     public bool ally = false;
     public bool remainCaptive = false;
@@ -20,7 +21,7 @@ public class CaptiveScript : MonoBehaviour
         
         if (influenceTimer > 0 && stillCaptive) 
         {
-            chance = Random.Range(0f, 100f);
+            chance = Random.Range(0, 100);
             influenceTimer -= Time.deltaTime;
             influenceBar.fillAmount = influenceTimer / 5f;
         }
@@ -28,9 +29,9 @@ public class CaptiveScript : MonoBehaviour
         if (influenceTimer > 5)
         {
             stillCaptive = false;
-            if (chance > 50) ally = true;
-            if (chance > 25 && chance < 50) remainCaptive = true;
-            if (chance > 0 && chance < 25) enemy = true;
+            if (chance > 50 - (charm.allyCount * 2)) ally = true;
+            if (chance > 25 - charm.allyCount && chance < 50 - (charm.allyCount * 2)) remainCaptive = true;
+            if (chance > 0 && chance < 25 - charm.allyCount) enemy = true;
         }
     }
     
