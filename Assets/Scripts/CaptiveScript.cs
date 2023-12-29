@@ -14,11 +14,6 @@ public class CaptiveScript : MonoBehaviour
     public bool remainCaptive = false;
     public bool enemy = false;
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -47,10 +42,4 @@ public class CaptiveScript : MonoBehaviour
             influenceBar.fillAmount = influenceTimer / 5f;
         }
     }
-
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if ((other.CompareTag("Aura")))
-    //         if (influenceTimer > 0) influenceTimer -= Time.deltaTime;
-    // }
 }
