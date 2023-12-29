@@ -71,13 +71,4 @@ public class PlayerHealth : MonoBehaviour
         health -= amount;
         OnPlayerDamaged?.Invoke();
     }
-
-    // private void OnTriggerEnter(Collider other)
-    // { // || (!isPlayer && other.CompareTag("Player Projectile"))
-    //     if ((isPlayer && other.CompareTag("Enemy Projectile")))
-    //     {
-    //         StartCoroutine(Damaged());
-    //     }
-    //     else if (other.CompareTag("Obstacle")) Destroy(gameObject);
-    // }
 }
