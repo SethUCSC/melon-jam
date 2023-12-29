@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class UITurning : MonoBehaviour
 {
-    public Transform target;
+    public GameObject cam;
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(target);
+        transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }
 }
