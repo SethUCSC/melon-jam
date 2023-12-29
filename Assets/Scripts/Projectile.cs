@@ -38,5 +38,6 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacle")) Destroy(gameObject);
+        else if (other.CompareTag("Cage")) Destroy(gameObject);
     }
 }
