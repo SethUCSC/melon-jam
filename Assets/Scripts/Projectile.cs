@@ -26,6 +26,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other);
         if ((other.CompareTag("Enemy") && isPlayerProjectile))
         {
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();

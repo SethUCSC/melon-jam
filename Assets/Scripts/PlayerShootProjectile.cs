@@ -9,7 +9,7 @@ public class PlayerShootProjectile : MonoBehaviour
     public bool canFire = true;
     [SerializeField] public int numShots = 5;
     [SerializeField] public float rotationAngle = 15f;
-    [SerializeField] private Vector3 offset;
+    [SerializeField] private Vector3 shootOffset = new Vector3(0, 1, 0);
     [SerializeField] private Transform projectile;
     
     void Update()
@@ -25,7 +25,7 @@ public class PlayerShootProjectile : MonoBehaviour
         float x = Screen.width / 2;
         float y = Screen.height / 2;
                     
-        Transform projectileTransform = Instantiate(projectile, transform.position + offset, Quaternion.identity);
+        Transform projectileTransform = Instantiate(projectile, transform.position + shootOffset, Quaternion.identity);
         var ray = cam.ScreenPointToRay(new Vector3(x, y, 0));
         projectileTransform.GetComponent<Rigidbody>().velocity = ray.direction * bulletSpeed;
         yield return new WaitForSeconds(0.2f);
