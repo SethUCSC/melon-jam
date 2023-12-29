@@ -27,6 +27,8 @@ public class MoveBehaviour : GenericBehaviour
 	{
 		// Set up the references.
 		if (!pause.paused) Cursor.lockState = CursorLockMode.Locked;
+		else if (pause.paused) Cursor.lockState = CursorLockMode.None;
+		Time.timeScale = 1f;
 		jumpBool = Animator.StringToHash("Jump");
 		groundedBool = Animator.StringToHash("Grounded");
 		behaviourManager.GetAnim.SetBool(groundedBool, true);
@@ -40,6 +42,9 @@ public class MoveBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
+		if (!pause.paused && !pause.health.playerDead) Cursor.lockState = CursorLockMode.Locked;
+		else if (pause.paused || pause.health.playerDead) Cursor.lockState = CursorLockMode.None;
+		
 		horizontal = Input.GetAxis("Horizontal");
 		vertical = Input.GetAxis("Vertical");
 
