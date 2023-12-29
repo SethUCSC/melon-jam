@@ -61,7 +61,7 @@ public class PlayerHealth : MonoBehaviour
     {
         canDamage = false;
         health -= damage;
-        if (isPlayer) healthBar.fillAmount = health / 10f;
+        healthBar.fillAmount = health / 10f;
         Debug.Log("Hello???");
     
         yield return new WaitForSeconds(0.15f);
