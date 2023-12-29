@@ -20,6 +20,8 @@ public class PlayerShootProjectile : MonoBehaviour
             canFire = false;
             StartCoroutine(ShootBullet());
         }
+
+        if (pause.health.playerDead) gameObject.GetComponent<PlayerShootProjectile>().enabled = false;
     }
 
     public IEnumerator ShootBullet() {
@@ -32,18 +34,4 @@ public class PlayerShootProjectile : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         canFire = true;
     }
-
-    // void ShootBullet() {
-    //     Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-    //     RaycastHit hit;
-
-    //     if (Physics.Raycast(ray, out hit))
-    //     {
-    //         // Spawn projectile at the shooting point
-    //         Transform projectileTransform = Instantiate(projectile, transform.position + offset, Quaternion.identity);
-    //         Vector3 shootDirection = (hit.point - transform.position).normalized;  
-    //         projectileTransform.GetComponent<Projectile>().Setup(shootDirection);
-    //     }
-    // }
-    
 }

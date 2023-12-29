@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public float health = 10f;
     public bool enemyHit = false;
     public bool isPlayer;
+    public bool playerDead = false;
 
     
     public Image healthBar;
@@ -23,8 +24,8 @@ public class PlayerHealth : MonoBehaviour
     public float totalDamage = 10f;
     public float invul_dur = 2f;
     public Vector2 offset;
+    public GameObject gameOver;
     // public ParticleSystem spark;
-    // public GameObject gameOver;
 
 
     // public BoxCollider2D playerCollider;
@@ -36,7 +37,9 @@ public class PlayerHealth : MonoBehaviour
         if (isPlayer && health <= 0)
         {
             Time.timeScale = 0f;
-            // gameOver.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            playerDead = true;
+            gameOver.SetActive(true);
         }
         else if (!isPlayer && health <= 0) Destroy(gameObject);
     }

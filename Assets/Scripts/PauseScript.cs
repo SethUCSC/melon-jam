@@ -10,13 +10,14 @@ public class PauseScript : MonoBehaviour
     public GameObject pausemenu;
     public GameObject player;
     public GameObject cam;
+    public PlayerHealth health;
     // public GameObject settingsMenu;
 
     public bool paused = false;
 
     void Update()
     {
-        if(Input.GetKeyDown("escape"))
+        if(Input.GetKeyDown("escape") && !health.playerDead)
         {
             if (paused)
             {
@@ -33,8 +34,8 @@ public class PauseScript : MonoBehaviour
     public void Pausing()
     {
         paused = true;
-        player.SetActive(false);
-        cam.SetActive(false);
+        // player.SetActive(false);
+        // cam.SetActive(false);
         pausemenu.SetActive(true);
         // settingsMenu.SetActive(false);
         Time.timeScale = 0f;
@@ -43,10 +44,16 @@ public class PauseScript : MonoBehaviour
     public void Resume()
     {
         paused = false;
-        cam.SetActive(true);
+        // player.SetActive(true);
+        // cam.SetActive(true);
         pausemenu.SetActive(false);
         // settingsMenu.SetActive(false);
         Time.timeScale = 1f;    
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Settings()
@@ -70,6 +77,6 @@ public class PauseScript : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("MovementTest");
     }
 }
