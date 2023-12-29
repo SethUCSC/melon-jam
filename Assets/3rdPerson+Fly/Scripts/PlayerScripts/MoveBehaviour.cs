@@ -4,6 +4,7 @@ using UnityEngine.Serialization;
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
 {
+	public PauseScript pause;
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
@@ -25,7 +26,7 @@ public class MoveBehaviour : GenericBehaviour
 	void Start()
 	{
 		// Set up the references.
-		Cursor.lockState = CursorLockMode.Locked;
+		if (!pause.paused) Cursor.lockState = CursorLockMode.Locked;
 		jumpBool = Animator.StringToHash("Jump");
 		groundedBool = Animator.StringToHash("Grounded");
 		behaviourManager.GetAnim.SetBool(groundedBool, true);

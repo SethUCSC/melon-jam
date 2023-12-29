@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerShootProjectile : MonoBehaviour
 {
     public Camera cam;
+    public PauseScript pause;
     public float bulletSpeed = 10;
     public bool canFire = true;
     [SerializeField] public int numShots = 5;
@@ -14,7 +15,7 @@ public class PlayerShootProjectile : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canFire) // 0 corresponds to the left mouse button
+        if (Input.GetMouseButtonDown(0) && canFire && !pause.paused) // 0 corresponds to the left mouse button
         {
             canFire = false;
             StartCoroutine(ShootBullet());
