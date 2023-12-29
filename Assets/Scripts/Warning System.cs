@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class WarningSystem : MonoBehaviour
 {
-    public GameObject warningArrow;
     public float smooth = 2.5f;
     public GameObject player;
     public Camera mainCamera;
