@@ -25,8 +25,16 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag("Player") && !isPlayerProjectile) || (other.CompareTag("Enemy") && isPlayerProjectile))
+        if ((other.CompareTag("Enemy") && isPlayerProjectile))
         {
+            PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
+            StartCoroutine(playerHealth.Damaged());
+            Destroy(gameObject);
+        }
+        else if ((other.CompareTag("Player") && !isPlayerProjectile))
+        {
+            PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
+            StartCoroutine(playerHealth.Damaged());
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacle")) Destroy(gameObject);
