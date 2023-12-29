@@ -62,7 +62,6 @@ public class PlayerHealth : MonoBehaviour
         canDamage = false;
         health -= damage;
         healthBar.fillAmount = health / 10f;
-        Debug.Log("Hello???");
     
         yield return new WaitForSeconds(0.15f);
         canDamage = true;

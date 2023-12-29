@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     public float moveSpeed = 10f;
     public float lifetime = 7f;
     public bool isPlayerProjectile;
+    public bool isAllyProjectile;
     private Vector3 shootDirection;
 
     public void Setup(Vector3 shootDirection) {
@@ -35,6 +36,12 @@ public class Projectile : MonoBehaviour
         {
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             StartCoroutine(playerHealth.Damaged());
+            Destroy(gameObject);
+        }
+        else if ((other.CompareTag("Enemy") && isAllyProjectile))
+        {
+            PlayerHealth enemyHealth = other.gameObject.GetComponent<PlayerHealth>();
+            StartCoroutine(enemyHealth.Damaged());
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacle")) Destroy(gameObject);
