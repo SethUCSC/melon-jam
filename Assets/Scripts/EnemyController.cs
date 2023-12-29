@@ -14,7 +14,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform secondIdleLocation;
     
     private Transform nextLocation;
-    [SerializeField] public float sightRange = 5f;
     private bool playerDetected;
     private bool isShooting;
     void Start()
@@ -61,7 +60,7 @@ public class EnemyController : MonoBehaviour
         if (enemy != null) {
             Transform projectileTransform = Instantiate(projectile, transform.position+shootOffset, Quaternion.identity);
             Vector3 shootDirection = (enemy.position - transform.position).normalized;
-            projectileTransform.GetComponent<Projectile>().Setup(shootDirection);
+            projectileTransform.GetComponent<Projectile>().Setup(shootDirection, transform);
 
             for (int i = 1; i < numShots; i++){
                 Transform projTransform = Instantiate(projectile, transform.position+shootOffset, Quaternion.identity);
@@ -70,7 +69,7 @@ public class EnemyController : MonoBehaviour
                 Quaternion rotationQuaternion = Quaternion.Euler(0f, newAngle, 0f);
                 Vector3 rotatedVector = rotationQuaternion * shootDirection;
                 
-                projTransform.GetComponent<Projectile>().Setup(rotatedVector);
+                projTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
             }
 
             for (int i = 1; i < numShots; i++){
@@ -81,7 +80,7 @@ public class EnemyController : MonoBehaviour
                 Vector3 rotatedVector = rotationQuaternion * shootDirection;
 
                 
-                projTransform.GetComponent<Projectile>().Setup(rotatedVector);
+                projTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
             }
         }
     }

@@ -16,7 +16,7 @@ public class CaptiveScript : MonoBehaviour
     public bool stillCaptive = true;
     public bool ally = false;
     public bool remainCaptive = false;
-    public bool enemy = false;
+    public bool enemyAlly = false;
 
     void Start()
     {
@@ -36,12 +36,16 @@ public class CaptiveScript : MonoBehaviour
         if (influenceTimer > 5)
         {
             stillCaptive = false;
-            ally = true;
-            // if (chance > 50 - (charm.allyCount * 2)) ally = true;
-            // if (chance > 25 - charm.allyCount && chance < 50 - (charm.allyCount * 2)) remainCaptive = true;
-            // if (chance > 0 && chance < 25 - charm.allyCount) enemy = true;
-        }
+            if (chance >= 50) {
+                ally = true;
+                gameObject.tag = "Ally";
+            }
+            if (chance < 50) {
+                enemyAlly = true;
+                gameObject.tag = "Enemy";
+            }
         
+        }
     }
     
     private void OnTriggerStay(Collider other)

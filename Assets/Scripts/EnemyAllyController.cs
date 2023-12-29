@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class AllyController : MonoBehaviour
+public class EnemyAllyController : MonoBehaviour
 {
     // gun variables
     [SerializeField] public int numShots = 5;
@@ -39,7 +39,7 @@ public class AllyController : MonoBehaviour
     void Update()
     {     
         RaycastHit hit;
-        if (captiveScript.ally) {
+        if (captiveScript.enemyAlly) {
             if (target != null && enemyDetected) {
                 Vector3 direct = target.position - transform.position;
                 if (Physics.Raycast(transform.position, direct, out hit)) {
@@ -68,15 +68,10 @@ public class AllyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if ((other.CompareTag("Player")))
         {
             enemyDetected = true;
             target = other.transform;
-        }
-        else if (other.CompareTag("Enemy Projectile"))
-        {
-            enemyDetected = true;
-            target = other.GetComponent<Projectile>().shooter;
         }
     }
 

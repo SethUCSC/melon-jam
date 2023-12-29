@@ -30,7 +30,7 @@ public class PlayerShootProjectile : MonoBehaviour
                     
         Transform projectileTransform = Instantiate(projectile, transform.position + shootOffset, Quaternion.identity);
         var ray = cam.ScreenPointToRay(new Vector3(x, y, 0));
-        projectileTransform.GetComponent<Rigidbody>().velocity = ray.direction * bulletSpeed;
+        projectileTransform.GetComponent<Projectile>().Setup(ray.direction, transform);
         yield return new WaitForSeconds(0.2f);
         canFire = true;
     }
