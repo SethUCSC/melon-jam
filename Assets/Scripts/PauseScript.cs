@@ -43,7 +43,6 @@ public class PauseScript : MonoBehaviour
     public void Resume()
     {
         paused = false;
-        player.GetComponent<MoveBehavior>().enabled = true;
         cam.SetActive(true);
         pausemenu.SetActive(false);
         // settingsMenu.SetActive(false);
