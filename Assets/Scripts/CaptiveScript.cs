@@ -7,9 +7,10 @@ using Pathfinding;
 public class CaptiveScript : MonoBehaviour
 {
     public Image influenceBar;
+    public CharmManager charm;
     public float influenceTimer = 0f;
     public float requiredTime = 6f;
-    public float chance;
+    public int chance;
     public bool stillCaptive = true;
     public bool ally = false;
     public bool remainCaptive = false;
@@ -55,6 +56,9 @@ public class CaptiveScript : MonoBehaviour
                 ai.destination = PickRandomPoint();
                 ai.SearchPath();
             }
+            // if (chance > 50 - (charm.allyCount * 2)) ally = true;
+            // if (chance > 25 - charm.allyCount && chance < 50 - (charm.allyCount * 2)) remainCaptive = true;
+            // if (chance > 0 && chance < 25 - charm.allyCount) enemy = true;
         }
         
     }
