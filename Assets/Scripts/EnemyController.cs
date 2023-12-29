@@ -12,13 +12,16 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform enemy;
     [SerializeField] private Transform idleLocation;
     [SerializeField] private Transform secondIdleLocation;
-    
     private Transform nextLocation;
     private bool playerDetected;
     private bool isShooting;
+    IAstarAI ai;
     void Start()
     {
-        gameObject.GetComponent<AIDestinationSetter>().target = idleLocation;
+        nextLocation = idleLocation;
+        ai = GetComponent<IAstarAI>();
+        ai.destination = nextLocation.position;
+        ai.SearchPath();
     }
 
     // Update is called once per frame
@@ -40,6 +43,17 @@ public class EnemyController : MonoBehaviour
                     isShooting = true;
                 }
             }
+            ai.destination = enemy.position;
+            ai.SearchPath(); 
+        }
+        else if (ai.remainingDistance < 0.12) {
+            if (nextLocation == idleLocation) {
+                nextLocation = secondIdleLocation;
+            } else {
+                nextLocation = idleLocation;
+            }
+            ai.destination = nextLocation.position;
+            ai.SearchPath(); 
         }
     }
 
@@ -52,7 +66,6 @@ public class EnemyController : MonoBehaviour
                 InvokeRepeating("ShootBullet", 1f, 1f);
                 isShooting = true;
             }
-            gameObject.GetComponent<AIDestinationSetter>().target = enemy;
         }
     }
 
