@@ -3,63 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class EnemyController : MonoBehaviour
+public class AllyController : MonoBehaviour
 {
+    // gun variables
     [SerializeField] public int numShots = 5;
     [SerializeField] public float rotationAngle = 15f;
     [SerializeField] private Transform projectile;
-    [SerializeField] private Transform enemy;
-    [SerializeField] private Transform idleLocation;
-    [SerializeField] private Transform secondIdleLocation;
-    private Transform nextLocation;
-    [SerializeField] public float sightRange = 5f;
-    private bool playerDetected;
-    private bool isShooting;
+    private Transform target = null;
+    private bool isShooting = false;
+
+    private CaptiveScript captiveScript;
+
+    // ai variables
+    public float pathingRadius = 20f;
+    IAstarAI ai;
+
     void Start()
     {
-        gameObject.GetComponent<AIDestinationSetter>().target = idleLocation;
+            captiveScript = GetComponent<CaptiveScript>();
+            ai = GetComponent<IAstarAI>();
+    }
+
+    Vector3 PickRandomPoint () {
+        var point = Random.insideUnitSphere * pathingRadius;
+
+        point.y = 0;
+        point += ai.position;
+        return point;
     }
 
     // Update is called once per frame
     void Update()
-    {  
-        RaycastHit hit;
-        if (enemy != null && playerDetected) {
-            if (Physics.Raycast(transform.position, enemy.position, out hit))
-            {
-                if (hit.collider.CompareTag("Obstacle") && isShooting)
-                {
-                    CancelInvoke("ShootBullet");
-                    isShooting = false;
-                }
-                else if (hit.collider.CompareTag("Obstacle") != true && !isShooting)
-                {
-                    InvokeRepeating("ShootBullet", 0.1f, 1f);
-                    isShooting = true;
-                }
+    {     
+        if (captiveScript.ally) {
+            if (target != null && !isShooting) {
+                ai.destination = target.position;
+                ai.SearchPath();
+                InvokeRepeating("ShootBullet", 1f, 1f);
+                isShooting = true;
+            }
+            else if (!ai.pathPending && (ai.reachedEndOfPath || !ai.hasPath) && target == null) {
+                ai.destination = PickRandomPoint();
+                ai.SearchPath();
+            }
         }
-
-        
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag("Player") || other.CompareTag("Player Projectile")) && !playerDetected)
+        if ((other.CompareTag("Enemy")))
         {
-            playerDetected = true;
-            if (!isShooting) {
-                InvokeRepeating("ShootBullet", 1f, 1f);
-                isShooting = true;
-            }
-            gameObject.GetComponent<AIDestinationSetter>().target = enemy;
+            target = other.transform;
         }
     }
 
     void ShootBullet() {
-        if (enemy != null) {
+        if (target != null) {
             Transform projectileTransform = Instantiate(projectile, transform.position, Quaternion.identity);
-            Vector3 shootDirection = (enemy.position - transform.position).normalized;
+            Vector3 shootDirection = (target.position - transform.position).normalized;
             projectileTransform.GetComponent<Projectile>().Setup(shootDirection);
 
             for (int i = 1; i < numShots; i++){
@@ -84,5 +85,4 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
 }

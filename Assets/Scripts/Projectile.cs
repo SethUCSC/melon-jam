@@ -38,6 +38,12 @@ public class Projectile : MonoBehaviour
             StartCoroutine(playerHealth.Damaged());
             Destroy(gameObject);
         }
+        else if ((other.CompareTag("Ally") && !isPlayerProjectile && !isAllyProjectile))
+        {
+            PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
+            StartCoroutine(playerHealth.Damaged());
+            Destroy(gameObject);
+        }
         else if ((other.CompareTag("Enemy") && isAllyProjectile))
         {
             PlayerHealth enemyHealth = other.gameObject.GetComponent<PlayerHealth>();
