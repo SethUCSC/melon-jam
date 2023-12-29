@@ -73,6 +73,11 @@ public class EnemyAllyController : MonoBehaviour
             enemyDetected = true;
             target = other.transform;
         }
+        else if (other.CompareTag("Player Projectile"))
+        {
+            enemyDetected = true;
+            target = other.GetComponent<Projectile>().shooter;
+        }
     }
 
     void ShootBullet() {
