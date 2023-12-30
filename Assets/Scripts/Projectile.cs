@@ -63,6 +63,7 @@ public class Projectile : MonoBehaviour
         }
         else if (other.CompareTag("Obstacle")) StartCoroutine(DelayedDestroy());
         else if (other.CompareTag("Cage")) StartCoroutine(DelayedDestroy());
+        // else StartCoroutine(DelayedDestroy());
     }
 
     public IEnumerator DelayedDestroy()
