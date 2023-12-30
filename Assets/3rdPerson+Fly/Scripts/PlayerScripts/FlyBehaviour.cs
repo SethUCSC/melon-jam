@@ -9,6 +9,7 @@ public class FlyBehaviour : GenericBehaviour
 	public GameObject mesh1;
 	public string flyButton = "Fly";              // Default fly button.
 	public string jumpButton = "Jump";              // Default jump button.
+	public float holdTimer = 0f;
 	public float downwardForce = 5f;
 	public float flySpeed = 4.0f;                 // Default flying speed.
 	public float sprintFactor = 2.0f;             // How much sprinting affects fly speed.
@@ -34,16 +35,32 @@ public class FlyBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
+		if (Input.GetButton(jumpButton))
+		{
+			if (holdTimer < 1f) holdTimer += Time.deltaTime;
+		}
+		else
+		{
+			if (holdTimer > 0f && !fly) holdTimer -= Time.deltaTime * 2;
+		}
+
+		if (holdTimer > 0.5) fly = true;
+		if (Input.GetButtonDown(jumpButton) || behaviourManager.IsGrounded()) 
+		{
+			holdTimer = 0f;
+			fly = false;
+		}
+
 		ver = Input.GetAxis("Vertical");
 		ver = 1;
 		// Toggle fly by input, only if there is no overriding state or temporary transitions.
-		if (Input.GetButtonDown(flyButton) && !behaviourManager.IsOverriding() 
-			&& !behaviourManager.GetTempLockStatus(behaviourManager.GetDefaultBehaviour))
-		{
-			fly = !fly;
+		// if (holdTimer > 0.8f && !behaviourManager.IsOverriding() 
+		// 	&& !behaviourManager.GetTempLockStatus(behaviourManager.GetDefaultBehaviour))
+		// {
+		// 	fly = !fly;
 
-			// Force end jump transition.
-			// behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
+		// 	// Force end jump transition.
+		// 	behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
 
 			// Obey gravity. It's the law!
 			// behaviourManager.GetRigidBody.useGravity = !fly;
@@ -54,6 +71,7 @@ public class FlyBehaviour : GenericBehaviour
 				// Register this behaviour.
 				behaviourManager.RegisterBehaviour(this.behaviourCode);
 				behaviourManager.GetCamScript.maxVerticalAngle = 10f;
+				behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
 				skeleton.SetActive(false);
 				mesh.SetActive(false);
 				skeleton1.SetActive(true);
@@ -68,15 +86,16 @@ public class FlyBehaviour : GenericBehaviour
 				behaviourManager.GetCamScript.maxVerticalAngle = 60f;
 				// Unregister this behaviour and set current behaviour to the default one.
 				behaviourManager.UnregisterBehaviour(this.behaviourCode);
+				// behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
 				skeleton.SetActive(true);
 				mesh.SetActive(true);
 				skeleton1.SetActive(false);
 				mesh1.SetActive(false);
 			}
-		}
+		// }
 
 		// Assert this is the active behaviour
-		fly = fly && behaviourManager.IsCurrentBehaviour(this.behaviourCode);
+		// fly = fly && behaviourManager.IsCurrentBehaviour(this.behaviourCode);
 
 		// Set fly related variables on the Animator Controller.
 		behaviourManager.GetAnim.SetBool(flyBool, fly);
