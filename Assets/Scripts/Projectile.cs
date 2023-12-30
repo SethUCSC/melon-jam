@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public float lifetime = 7f;
+    public ParticleSystem impact;
     public bool isPlayerProjectile;
     public bool isAllyProjectile;
     private Vector3 shootDirection;
@@ -32,32 +33,42 @@ public class Projectile : MonoBehaviour
         {
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             StartCoroutine(playerHealth.Damaged());
-            Destroy(gameObject);
+            impact.Play();
+            StartCoroutine(DelayedDestroy());
         }
         else if ((other.CompareTag("Enemy") && isAllyProjectile))
         {
             PlayerHealth enemyHealth = other.gameObject.GetComponent<PlayerHealth>();
             StartCoroutine(enemyHealth.Damaged());
-            Destroy(gameObject);
+            StartCoroutine(DelayedDestroy());
         }
         else if ((other.CompareTag("Player") && !isPlayerProjectile))
         {
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             StartCoroutine(playerHealth.Damaged());
-            Destroy(gameObject);
+            StartCoroutine(DelayedDestroy());
         }
         else if ((other.CompareTag("Ally") && !isPlayerProjectile && !isAllyProjectile))
         {
             PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
             StartCoroutine(playerHealth.Damaged());
-            Destroy(gameObject);
+            StartCoroutine(DelayedDestroy());
         }
         else if ((other.CompareTag("Enemy Projectile") && (isPlayerProjectile || isAllyProjectile)))
         {
             Destroy(other.gameObject);
-            Destroy(gameObject);
+            StartCoroutine(DelayedDestroy());
         }
-        else if (other.CompareTag("Obstacle")) Destroy(gameObject);
-        else if (other.CompareTag("Cage")) Destroy(gameObject);
+        else if (other.CompareTag("Obstacle")) StartCoroutine(DelayedDestroy());
+        else if (other.CompareTag("Cage")) StartCoroutine(DelayedDestroy());
+    }
+
+    public IEnumerator DelayedDestroy()
+    {
+        impact.Play();
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 }
