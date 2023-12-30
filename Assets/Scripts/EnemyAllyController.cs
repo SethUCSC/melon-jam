@@ -13,6 +13,8 @@ public class EnemyAllyController : MonoBehaviour
     private Transform target = null;
     private bool isShooting = false;
     private bool enemyDetected = false;
+    private Animator animator;
+    
     
 
     private CaptiveScript captiveScript;
@@ -23,6 +25,7 @@ public class EnemyAllyController : MonoBehaviour
 
     void Start()
     {
+            animator = GetComponent<Animator>();
             captiveScript = GetComponent<CaptiveScript>();
             ai = GetComponent<IAstarAI>();
     }
@@ -57,11 +60,13 @@ public class EnemyAllyController : MonoBehaviour
                 }
                 ai.destination = target.position;
                 ai.SearchPath();    
+                animator.SetBool("isWalking", true);
             }
             // Idle state - chooses a random point and goes towards it
             else if (!ai.pathPending && (ai.reachedEndOfPath || !ai.hasPath) && target == null) {
                 ai.destination = PickRandomPoint();
                 ai.SearchPath();
+                animator.SetBool("isWalking", true);
             }
         }
     }

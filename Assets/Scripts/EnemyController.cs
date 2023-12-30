@@ -54,6 +54,7 @@ public class EnemyController : MonoBehaviour
             }
             ai.destination = target.position;
             ai.SearchPath();
+            animator.SetBool("isWalking", true);
         }
         // idle state - ai paths between two points
         else if (ai.remainingDistance < 0.12 && secondIdleLocation != null) {
