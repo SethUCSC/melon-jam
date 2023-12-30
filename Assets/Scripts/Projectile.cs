@@ -56,7 +56,9 @@ public class Projectile : MonoBehaviour
         }
         else if ((other.CompareTag("Enemy Projectile") && (isPlayerProjectile || isAllyProjectile)))
         {
-            Destroy(other.gameObject);
+            if (other.gameObject) {
+                Destroy(other.gameObject);
+            }
             StartCoroutine(DelayedDestroy());
         }
         else if (other.CompareTag("Obstacle")) StartCoroutine(DelayedDestroy());
