@@ -5,6 +5,8 @@ using UnityEngine;
 public class JumpScript : MonoBehaviour
 {
     public ParticleSystem wingEffect;
+    public AudioClip flapClip;
+	public AudioSource flap;
     public float jumpHeight = 0.5f;
 
     // Update is called once per frame
@@ -18,6 +20,7 @@ public class JumpScript : MonoBehaviour
             RemoveVerticalVelocity();
 			// Set jump vertical impulse velocity.
             wingEffect.Play();
+            flap.PlayOneShot(flapClip, 1f);
 			float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
 			velocity = Mathf.Sqrt(velocity);
 			GetComponent<Rigidbody>().AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
