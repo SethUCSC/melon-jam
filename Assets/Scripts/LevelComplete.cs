@@ -7,14 +7,14 @@ public class LevelComplete : MonoBehaviour
 {
     public GameObject levelCompleteScreen;
     public PauseScript pause;
+    public GameObject[] boss;
 
-    void Start()
+    void Update()
     {
-        
+        boss = GameObject.FindGameObjectsWithTag("Boss");
+        if (boss.Length <= 0) LevelCompleted();
     }
-
-    // Update is called once per frame
-    public void NexttLevel()
+    public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -23,10 +23,15 @@ public class LevelComplete : MonoBehaviour
     {
         if ((other.CompareTag("Player")))
         {
-            levelCompleteScreen.SetActive(true);
-            pause.paused = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0f;
+            LevelCompleted();
         }
+    }
+
+    public void LevelCompleted()
+    {
+        levelCompleteScreen.SetActive(true);
+        pause.paused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0f;
     }
 }
