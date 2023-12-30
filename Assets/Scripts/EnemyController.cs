@@ -22,7 +22,6 @@ public class EnemyController : MonoBehaviour
     private float oscillatingAngle;
     private int counter = -10;
     private Animator animator;
-    private bool isWalking = false;
     IAstarAI ai;
     void Start()
     {
@@ -36,7 +35,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-        animator.SetBool("isWalking", isWalking);
+        
         RaycastHit hit;
         if (target != null && enemyDetected) {
             Vector3 direct = target.position - transform.position;
@@ -54,8 +53,7 @@ public class EnemyController : MonoBehaviour
                 }
             }
             ai.destination = target.position;
-            ai.SearchPath(); 
-            isWalking = true;
+            ai.SearchPath();
         }
         // idle state - ai paths between two points
         else if (ai.remainingDistance < 0.12 && secondIdleLocation != null) {
@@ -66,7 +64,7 @@ public class EnemyController : MonoBehaviour
             }
             ai.destination = nextLocation.position;
             ai.SearchPath(); 
-            isWalking = true;
+            animator.SetBool("isWalking", true);
         }
     }
 
