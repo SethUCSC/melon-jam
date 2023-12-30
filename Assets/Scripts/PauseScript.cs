@@ -34,8 +34,6 @@ public class PauseScript : MonoBehaviour
     public void Pausing()
     {
         paused = true;
-        // player.SetActive(false);
-        // cam.SetActive(false);
         pausemenu.SetActive(true);
         // settingsMenu.SetActive(false);
         Time.timeScale = 0f;
