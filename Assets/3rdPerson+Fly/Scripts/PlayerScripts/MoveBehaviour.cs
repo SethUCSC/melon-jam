@@ -21,10 +21,12 @@ public class MoveBehaviour : GenericBehaviour
 	private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
 	public float horizontal;
 	public float vertical;
+	private Animator animator;
 
 	// Start is always called after any Awake functions.
 	void Start()
 	{
+		animator = GetComponent<Animator>();
 		// Set up the references.
 		if (!pause.paused) Cursor.lockState = CursorLockMode.Locked;
 		else if (pause.paused) Cursor.lockState = CursorLockMode.None;

@@ -52,6 +52,11 @@ public class Projectile : MonoBehaviour
             StartCoroutine(playerHealth.Damaged());
             Destroy(gameObject);
         }
+        else if ((other.CompareTag("Enemy Projectile") && (isPlayerProjectile || isAllyProjectile)))
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
         else if (other.CompareTag("Obstacle")) Destroy(gameObject);
         else if (other.CompareTag("Cage")) Destroy(gameObject);
     }

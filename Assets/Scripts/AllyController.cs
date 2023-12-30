@@ -50,7 +50,7 @@ public class AllyController : MonoBehaviour
                     }
                     else if (hit.collider.CompareTag("Obstacle") != true && !isShooting)
                     {
-                        InvokeRepeating("ShootBullet", 0.25f, 1f);
+                        InvokeRepeating("ShootBullet", 0.6f, 1f);
                         isShooting = true;
                     }
                 }

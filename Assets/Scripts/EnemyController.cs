@@ -5,6 +5,8 @@ using Pathfinding;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] public float fireRate = 1f;
+    [SerializeField] public float fireDelay = 1f;
     [SerializeField] public int numShots = 5;
     [SerializeField] public int numVerticalStacks = 1;
     [SerializeField] public Vector3 verticalStackOffset = new Vector3(0, 1, 0);
@@ -17,9 +19,14 @@ public class EnemyController : MonoBehaviour
     private Transform target = null;
     private bool isShooting = false;
     private bool enemyDetected = false;
+    private float oscillatingAngle;
+    private int counter = -10;
+    private Animator animator;
+    private bool isWalking = false;
     IAstarAI ai;
     void Start()
     {
+        animator = GetComponent<Animator>();
         nextLocation = idleLocation;
         ai = GetComponent<IAstarAI>();
         ai.destination = nextLocation.position;
@@ -29,6 +36,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
+        animator.SetBool("isWalking", isWalking);
         RaycastHit hit;
         if (target != null && enemyDetected) {
             Vector3 direct = target.position - transform.position;
@@ -41,15 +49,16 @@ public class EnemyController : MonoBehaviour
                 }
                 else if (hit.collider.CompareTag("Obstacle") != true && !isShooting)
                 {
-                    InvokeRepeating("ShootBullet", 0.1f, 1f);
+                    InvokeRepeating("ShootBullet", fireDelay, fireRate);
                     isShooting = true;
                 }
             }
             ai.destination = target.position;
             ai.SearchPath(); 
+            isWalking = true;
         }
         // idle state - ai paths between two points
-        else if (ai.remainingDistance < 0.12) {
+        else if (ai.remainingDistance < 0.12 && secondIdleLocation != null) {
             if (nextLocation == idleLocation) {
                 nextLocation = secondIdleLocation;
             } else {
@@ -57,6 +66,7 @@ public class EnemyController : MonoBehaviour
             }
             ai.destination = nextLocation.position;
             ai.SearchPath(); 
+            isWalking = true;
         }
     }
 
@@ -64,30 +74,36 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("Ally"))
         {
+            Debug.Log("player detected");
             enemyDetected = true;
             target = other.transform;
         }
         else if (other.CompareTag("Player Projectile") || other.CompareTag("Ally Projectile"))
         {
             enemyDetected = true;
+            Debug.Log("player detected");
             target = other.GetComponent<Projectile>().shooter;
         }
     }
 
     void ShootBullet() {
+        float wave = counter * 8;
         if (target != null) {
             for (int j = 0; j < numVerticalStacks; j++) {
                 Vector3 firingPosition = transform.position + shootOffset + verticalStackOffset*j;
                 Transform projectileTransform = Instantiate(projectile, firingPosition, Quaternion.identity);
                 Vector3 shootDirection = (target.position - transform.position).normalized;
-                projectileTransform.GetComponent<Projectile>().Setup(shootDirection, transform);
+
+                Quaternion rotationQuaternion = Quaternion.Euler(0f, wave, 0f);
+                Vector3 rotatedVector = rotationQuaternion * shootDirection;
+                projectileTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
 
                 for (int i = 1; i < numShots; i++){
                     Transform projTransform = Instantiate(projectile, firingPosition, Quaternion.identity);
                     
-                    float newAngle = rotationAngle * i;
-                    Quaternion rotationQuaternion = Quaternion.Euler(0f, newAngle, 0f);
-                    Vector3 rotatedVector = rotationQuaternion * shootDirection;
+                    float newAngle = wave + rotationAngle * i;
+                    rotationQuaternion = Quaternion.Euler(0f, newAngle, 0f);
+                    rotatedVector = rotationQuaternion * shootDirection;
                     
                     projTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
                 }
@@ -95,13 +111,18 @@ public class EnemyController : MonoBehaviour
                 for (int i = 1; i < numShots; i++){
                     Transform projTransform = Instantiate(projectile, firingPosition, Quaternion.identity);
                     
-                    float newAngle = -rotationAngle * i;
-                    Quaternion rotationQuaternion = Quaternion.Euler(0f, newAngle, 0f);
-                    Vector3 rotatedVector = rotationQuaternion * shootDirection;
+                    float newAngle = -rotationAngle * i + wave;
+                    rotationQuaternion = Quaternion.Euler(0f, newAngle, 0f);
+                    rotatedVector = rotationQuaternion * shootDirection;
 
                     
                     projTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
                 }
+            }
+            if (counter < 10) {
+                counter++;
+            } else {
+                counter = -10;
             }
         }
     }

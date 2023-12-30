@@ -51,7 +51,7 @@ public class EnemyAllyController : MonoBehaviour
                     else if (hit.collider.CompareTag("Obstacle") != true && !isShooting)
                     {
                         Debug.Log(hit.collider.CompareTag("Obstacle"));
-                        InvokeRepeating("ShootBullet", 0.25f, 1f);
+                        InvokeRepeating("ShootBullet", 2f, 1f);
                         isShooting = true;
                     }
                 }
@@ -68,12 +68,12 @@ public class EnemyAllyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag("Player")))
+        if (other.CompareTag("Player") || other.CompareTag("Ally"))
         {
             enemyDetected = true;
             target = other.transform;
         }
-        else if (other.CompareTag("Player Projectile"))
+        else if (other.CompareTag("Player Projectile") || other.CompareTag("Ally Projectile"))
         {
             enemyDetected = true;
             target = other.GetComponent<Projectile>().shooter;
