@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JumpScript : MonoBehaviour
 {
+    public ParticleSystem wingEffect;
     public float jumpHeight = 0.5f;
 
     // Update is called once per frame
@@ -16,6 +17,7 @@ public class JumpScript : MonoBehaviour
 			// Remove vertical velocity to avoid "super jumps" on slope ends.
             RemoveVerticalVelocity();
 			// Set jump vertical impulse velocity.
+            wingEffect.Play();
 			float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
 			velocity = Mathf.Sqrt(velocity);
 			GetComponent<Rigidbody>().AddForce(Vector3.up * velocity, ForceMode.VelocityChange);

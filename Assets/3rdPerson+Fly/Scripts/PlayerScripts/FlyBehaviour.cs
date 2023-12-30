@@ -7,6 +7,8 @@ public class FlyBehaviour : GenericBehaviour
 	public GameObject mesh;
 	public GameObject skeleton1;
 	public GameObject mesh1;
+	public TrailRenderer trail1;
+	public TrailRenderer trail2;
 	public string flyButton = "Fly";              // Default fly button.
 	public string jumpButton = "Jump";              // Default jump button.
 	public float holdTimer = 0f;
@@ -72,6 +74,8 @@ public class FlyBehaviour : GenericBehaviour
 				behaviourManager.RegisterBehaviour(this.behaviourCode);
 				behaviourManager.GetCamScript.maxVerticalAngle = 10f;
 				behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
+				trail1.enabled = true;
+				trail2.enabled = true;
 				skeleton.SetActive(false);
 				mesh.SetActive(false);
 				skeleton1.SetActive(true);
@@ -86,7 +90,8 @@ public class FlyBehaviour : GenericBehaviour
 				behaviourManager.GetCamScript.maxVerticalAngle = 60f;
 				// Unregister this behaviour and set current behaviour to the default one.
 				behaviourManager.UnregisterBehaviour(this.behaviourCode);
-				// behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
+				trail1.enabled = false;
+				trail2.enabled = false;
 				skeleton.SetActive(true);
 				mesh.SetActive(true);
 				skeleton1.SetActive(false);
