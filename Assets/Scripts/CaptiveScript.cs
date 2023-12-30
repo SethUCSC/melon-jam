@@ -36,11 +36,12 @@ public class CaptiveScript : MonoBehaviour
         if (influenceTimer > 5)
         {
             stillCaptive = false;
-            if (chance >= 50) {
+            if (chance >= 50 - charm.charmScore * 3) {
+                charm.charmScore ++;
                 ally = true;
                 gameObject.tag = "Ally";
             }
-            if (chance < 50) {
+            if (chance < 50 - charm.charmScore * 3) {
                 enemyAlly = true;
                 gameObject.tag = "Enemy";
             }
