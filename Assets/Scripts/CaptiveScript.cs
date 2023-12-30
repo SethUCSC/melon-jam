@@ -13,6 +13,7 @@ public class CaptiveScript : MonoBehaviour
 
     // captive variables
     public int chance;
+    public bool charmScoreIncreased = false;
     public bool stillCaptive = true;
     public bool ally = false;
     public bool remainCaptive = false;
@@ -37,7 +38,11 @@ public class CaptiveScript : MonoBehaviour
         {
             stillCaptive = false;
             if (chance >= 50 - charm.charmScore * 3) {
-                charm.charmScore ++;
+                if (!charmScoreIncreased)
+                {
+                    charmScoreIncreased = true;
+                    charm.charmScore ++;
+                }
                 ally = true;
                 gameObject.tag = "Ally";
             }
