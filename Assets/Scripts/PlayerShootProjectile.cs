@@ -6,6 +6,8 @@ public class PlayerShootProjectile : MonoBehaviour
 {
     public Camera cam;
     public PauseScript pause;
+    public AudioClip blastClip;
+	public AudioSource blast;
     public float bulletSpeed = 10;
     public float fireRate = 0.2f;
     public bool canFire = true;
@@ -32,6 +34,7 @@ public class PlayerShootProjectile : MonoBehaviour
         Transform projectileTransform = Instantiate(projectile, transform.position + shootOffset, Quaternion.identity);
         var ray = cam.ScreenPointToRay(new Vector3(x, y, 0));
         projectileTransform.GetComponent<Projectile>().Setup(ray.direction * bulletSpeed, transform);
+        blast.PlayOneShot(blastClip, 1f);
         yield return new WaitForSeconds(fireRate);
         canFire = true;
     }
