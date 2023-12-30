@@ -63,6 +63,7 @@ public class Projectile : MonoBehaviour
     {
         impact.Play();
         GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
