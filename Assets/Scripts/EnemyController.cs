@@ -74,14 +74,12 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("Ally"))
         {
-            Debug.Log("player detected");
             enemyDetected = true;
             target = other.transform;
         }
         else if (other.CompareTag("Player Projectile") || other.CompareTag("Ally Projectile"))
         {
             enemyDetected = true;
-            Debug.Log("player detected");
             target = other.GetComponent<Projectile>().shooter;
         }
     }
