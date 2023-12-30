@@ -19,12 +19,14 @@ public class EnemyController : MonoBehaviour
     private Transform target = null;
     private bool isShooting = false;
     private bool enemyDetected = false;
-    private float oscillatingAngle;
-    private int counter = -10;
+    [SerializeField] public float oscillatingAngle;
+    [SerializeField] public int numOscillations;
+    private int counter;
     private Animator animator;
     IAstarAI ai;
     void Start()
     {
+        counter = -1 * numOscillations;
         animator = GetComponent<Animator>();
         nextLocation = idleLocation;
         ai = GetComponent<IAstarAI>();
@@ -84,7 +86,8 @@ public class EnemyController : MonoBehaviour
     }
 
     void ShootBullet() {
-        float wave = counter * 8;
+        Debug.Log(counter);
+        float wave = counter * oscillatingAngle;
         if (target != null) {
             for (int j = 0; j < numVerticalStacks; j++) {
                 Vector3 firingPosition = transform.position + shootOffset + verticalStackOffset*j;
@@ -116,10 +119,10 @@ public class EnemyController : MonoBehaviour
                     projTransform.GetComponent<Projectile>().Setup(rotatedVector, transform);
                 }
             }
-            if (counter < 10) {
+            if (counter < numOscillations) {
                 counter++;
             } else {
-                counter = -10;
+                counter = -1 * numOscillations;
             }
         }
     }
