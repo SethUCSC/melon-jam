@@ -41,7 +41,12 @@ public class PlayerHealth : MonoBehaviour
             playerDead = true;
             gameOver.SetActive(true);
         }
-        else if (!isPlayer && health <= 0) Destroy(gameObject);
+        else if (!isPlayer && health <= 0) 
+        {
+            CharmManager charm = GameObject.FindWithTag("Player").GetComponent<CharmManager>();
+            charm.charmScore ++;
+            Destroy(gameObject);
+        }
     }
 
     public void Restart()
