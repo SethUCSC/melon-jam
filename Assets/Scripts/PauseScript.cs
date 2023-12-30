@@ -35,6 +35,7 @@ public class PauseScript : MonoBehaviour
     {
         paused = true;
         pausemenu.SetActive(true);
+        AudioListener.pause = true;
         // settingsMenu.SetActive(false);
         Time.timeScale = 0f;
     }
@@ -45,6 +46,7 @@ public class PauseScript : MonoBehaviour
         // player.SetActive(true);
         // cam.SetActive(true);
         pausemenu.SetActive(false);
+        AudioListener.pause = false;
         // settingsMenu.SetActive(false);
         Time.timeScale = 1f;    
     }

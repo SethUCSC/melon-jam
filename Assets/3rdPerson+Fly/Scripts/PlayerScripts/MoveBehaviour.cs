@@ -5,6 +5,8 @@ using UnityEngine.Serialization;
 public class MoveBehaviour : GenericBehaviour
 {
 	public PauseScript pause;
+	public AudioSource walk;
+	// public bool walk;
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
@@ -66,6 +68,12 @@ public class MoveBehaviour : GenericBehaviour
 		
 		horizontal = Input.GetAxis("Horizontal");
 		vertical = Input.GetAxis("Vertical");
+
+		if (behaviourManager.IsGrounded()) 
+		{
+			if ((horizontal == 0 && vertical == 0)) walk.Play();
+		}
+		else walk.Pause();
 
 		// Get jump input.
 		if (!jump && Input.GetButtonDown(jumpButton))

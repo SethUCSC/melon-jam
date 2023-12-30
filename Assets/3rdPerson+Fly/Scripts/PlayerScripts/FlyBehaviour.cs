@@ -7,6 +7,10 @@ public class FlyBehaviour : GenericBehaviour
 	public GameObject mesh;
 	public GameObject skeleton1;
 	public GameObject mesh1;
+	public AudioClip glideStartClip;
+	public AudioClip glideClip;
+	public AudioSource glideStart;
+	public AudioSource glide;
 	public TrailRenderer trail1;
 	public TrailRenderer trail2;
 	public string flyButton = "Fly";              // Default fly button.
@@ -74,6 +78,9 @@ public class FlyBehaviour : GenericBehaviour
 				behaviourManager.RegisterBehaviour(this.behaviourCode);
 				behaviourManager.GetCamScript.maxVerticalAngle = 10f;
 				behaviourManager.UnlockTempBehaviour(behaviourManager.GetDefaultBehaviour);
+				// glide.PlayOneShot(glideClip, 0.5f);
+				glideStart.PlayOneShot(glideStartClip, 0.3f);
+				glide.volume = 1f;
 				trail1.enabled = true;
 				trail2.enabled = true;
 				skeleton.SetActive(false);
@@ -90,7 +97,7 @@ public class FlyBehaviour : GenericBehaviour
 				behaviourManager.GetCamScript.maxVerticalAngle = 60f;
 				// Unregister this behaviour and set current behaviour to the default one.
 				behaviourManager.UnregisterBehaviour(this.behaviourCode);
-				trail1.enabled = false;
+				glide.volume = 0;
 				trail2.enabled = false;
 				skeleton.SetActive(true);
 				mesh.SetActive(true);
