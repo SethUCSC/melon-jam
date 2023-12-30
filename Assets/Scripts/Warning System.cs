@@ -43,10 +43,11 @@ public class WarningSystem : MonoBehaviour
                 projectileToArrowMap[targetTransform].rotation = Quaternion.Slerp(projectileToArrowMap[targetTransform].rotation, Quaternion.Euler(0, 0, angle),  Time.deltaTime * smooth);
 
                 float distance = Vector3.Distance(targetTransform.position, player.transform.position);
+                float verticalDistance = Mathf.Abs(targetTransform.position.y - player.transform.position.y);
 
                 Image warningArrowImage = projectileToArrowMap[targetTransform].GetComponentInChildren<Image>();
                 Color currentColor = warningArrowImage.color;
-                currentColor.a = (20 - distance) / 20;
+                currentColor.a = (20 - verticalDistance - distance) / 20;
                 if (angle > 60 || angle < -60) {
                     currentColor.a = 0;
                 }
