@@ -10,6 +10,6 @@ public class BossDoor : MonoBehaviour
     void Update()
     {
         demons = GameObject.FindGameObjectsWithTag("Enemy");
-        if (demons.Length <= 0) Destroy(gameObject);
+        if (demons.Length <= 3) Destroy(gameObject);
     }
 }
